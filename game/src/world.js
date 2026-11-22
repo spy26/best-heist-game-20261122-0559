@@ -6,7 +6,6 @@ import { createThief, updateThief, tossCoin, dropSmoke, thiefNoiseRadius } from 
 import { createGuards, updateGuards, guardSeesThief } from './guards.js';
 import { createCameras, updateCameras } from './cameras.js';
 import { createAlarm, updateAlarm, smashAlarm } from './alarm.js';
-import { LOCKPICK_TIME, ALARM_MAX } from './config.js';
 import { dist } from './vision.js';
 
 export const EVENT_SPOTTED = 'spotted';
@@ -75,8 +74,7 @@ export function updateWorld(world, input, dt, audio) {
     if (ev === 'dash') audio.step();
   });
 
-  // Smash the vault glass with a click on it? No — deliberate: press F near
-  // the case to smash (fast, loud, +alarm). F is read here via input.pick2.
+  // Smash the vault glass: press F near the case (fast, loud, +alarm).
   if (input.smash && !world.vaultOpen && dist(world.thief.x, world.thief.y, level.vault.cx, level.vault.cy) < 110) {
     world.vaultOpen = true;
     world.vaultSmashed = true;
@@ -159,6 +157,4 @@ export function updateWorld(world, input, dt, audio) {
   world.smokes = world.smokes.filter((s) => s.t > 0);
   for (const f of world.floating) f.t -= dt;
   world.floating = world.floating.filter((f) => f.t > 0);
-  void LOCKPICK_TIME;
-  void ALARM_MAX;
 }
